@@ -317,3 +317,4 @@ See also: unpop-stack-marker."
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+(add-hook 'html-mode-hook 'turn-off-auto-fill)
