@@ -70,7 +70,8 @@ See also: unpop-stack-marker."
 (global-set-key [?\s-l] 'backward-char)
 ;; (customize gest confused by the simple approach)
 (global-set-key (vector (read-from-string "?\\s-;")) 'forward-char)
-
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C-=") 'text-scale-decrease) ; can't use C-minus because it's bound to negative-argument
 
 ;; super meta  (wordwise/pagewise)
 (global-set-key [?\s-\M-j] 'scroll-up)
@@ -169,22 +170,34 @@ See also: unpop-stack-marker."
 (server-start)
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(auto-compression-mode t nil (jka-compr))
- '(blink-cursor nil)
+ '(blink-cursor-mode nil)
  '(case-fold-search t)
  '(compilation-scroll-output t)
  '(compilation-window-height 10)
  '(confirm-kill-emacs nil)
  '(current-language-environment "ASCII")
- '(default-frame-alist (quote ((foreground-color . "black") (background-color . "#d5dadf") (tool-bar-lines . 0) (menu-bar-lines . 1))))
+ '(default-frame-alist
+    (quote
+     ((foreground-color . "black")
+      (background-color . "#d5dadf")
+      (menu-bar-lines . 1))))
  '(delete-old-versions t)
- '(delete-selection-mode t t)
- '(face-font-family-alternatives (quote (("bitstream-bitstream vera sans mono" "courier" "fixed") ("helv" "helvetica" "arial" "fixed"))))
+ '(delete-selection-mode t)
+ '(face-font-family-alternatives
+   (quote
+    (("bitstream-bitstream vera sans mono" "courier" "fixed")
+     ("helv" "helvetica" "arial" "fixed"))))
  '(fancy-splash-image nil)
+ '(flx-ido-mode t)
  '(font-lock-maximum-decoration nil)
  '(global-font-lock-mode t nil (font-lock))
+ '(ido-everywhere t)
+ '(inhibit-startup-screen t)
  '(initial-scratch-message "
 ")
  '(ispell-extra-args (quote ("-W" "2")))
@@ -200,8 +213,10 @@ See also: unpop-stack-marker."
 ;; it works with font height 122
 ;; also "b&h-lucidatypewriter" at 136
 (custom-set-faces
-  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:stipple nil :background "#d5dadf" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :family "adobe-courier"))))
  '(font-lock-builtin-face ((((class color) (background light)) (:foreground "Gray30"))))
  '(font-lock-function-name-face ((((class color) (background light)) (:foreground "Blue" :weight bold))))
@@ -300,21 +315,40 @@ See also: unpop-stack-marker."
 (global-set-key (kbd "s-j") 'jump-to-register)
 
 (put 'erase-buffer 'disabled nil)
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
+
+
 
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 (add-hook 'html-mode-hook 'turn-off-auto-fill)
+
+;; is this actually working?
+;; source: https://www.emacswiki.org/emacs/BackupDirectory
+(setq backup-by-copying t               ; don't clobber symlinks
+      backup-directory-alist
+      '(("." . "~/.emacs-autosave"))    ; don't litter my fs tree
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)                    ; M-x package-list-packages, M-x package-install
+(require 'evil)
+; (require 'coffee-mode)
+(require 'flymake-ruby)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+(setq ruby-deep-indent-paren nil)
+(require 'inf-ruby)
+(require 'projectile)
+(projectile-global-mode)
+(require 'ido)
+(require 'flx-ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+
+
