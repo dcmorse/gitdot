@@ -137,7 +137,6 @@ alias rew='cd /home/dm/contra'
 # old version was this: alias em='emacsclient --no-wait'
 function em ()
 {
-    echo hello
     if echo "$1" | egrep -q ':[0-9]+$';
     then
         MYFILE=`echo "$1" | sed 's/:.*$//'`
@@ -151,3 +150,5 @@ loc ()
 { 
     find . -iname "*$1*" -print
 }
+
+. $HOME/.supersecret.sh

@@ -67,36 +67,39 @@ See also: unpop-stack-marker."
 ;; super       (charwise/linewise)
 (global-set-key [?\s-j] 'next-line)
 (global-set-key [?\s-k] 'previous-line)
-(global-set-key [?\s-l] 'backward-char)
+(global-set-key [?\s-l] 'forward-char)
 ;; (customize gest confused by the simple approach)
-(global-set-key (vector (read-from-string "?\\s-;")) 'forward-char)
+;; (global-set-key (vector (read-from-string "?\\s-;")) 'forward-char)
+;; nah, be like vi:
+(global-set-key [?\s-h] 'backward-char)
+
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C-=") 'text-scale-decrease) ; can't use C-minus because it's bound to negative-argument
 
 ;; super meta  (wordwise/pagewise)
 (global-set-key [?\s-\M-j] 'scroll-up)
 (global-set-key [?\s-\M-k] 'scroll-down)
-(global-set-key [?\s-\M-l] 'backward-word)
-;; (customize gest confused by the simple approach)
-(global-set-key (vector (read-from-string "?\\M-;")) 'forward-word)
+(global-set-key [?\s-\M-l] 'forward-word)
+(global-set-key [?\s-\M-h] 'backward-word)
 
 ;; super shift (sexp-wise/definition-wise)
 (global-set-key [?\s-J] 'end-of-defun)
 (global-set-key [?\s-K] 'beginning-of-defun)
-(global-set-key [?\s-L] 'backward-sexp)
-(global-set-key [?\s-:] 'forward-sexp)
+(global-set-key [?\s-L] 'forward-sexp)
+(global-set-key [?\s-H] 'backward-sexp)
 
 ;; super upper-row
-(global-set-key [?\s-o] 'bury-buffer)        ; replace with modeline voodoo
-(global-set-key [?\s-p] 'dave-unbury-buffer) ; replace with modeline voodoo
+;; super-p is masked by gnome for horrible reasons, easier to pick a new key for these
+;; (global-set-key [?\s-o] 'bury-buffer)        ; replace with modeline voodoo
+;; (global-set-key [?\s-p] 'dave-unbury-buffer) ; replace with modeline voodoo
 (global-set-key [?\s-i] 'push-stack-marker)
 (global-set-key [?\s-u] 'pop-stack-marker)
 (global-set-key [?\s-y] 'unpop-stack-marker)
 
 ;; super left-hand
-(global-set-key [?\s-a] '(lambda () (interactive) (switch-to-buffer "main.cpp")))
-(global-set-key [?\s-s] 'shell)
-(global-set-key [?\s-d] 'lisp-buffer-switcharoo)
+(global-set-key [?\s-d] 'bury-buffer)
+(global-set-key [?\s-f] 'unbury-buffer)
+;;(global-set-key [?\s-d] 'lisp-buffer-switcharoo)
 
 
 (defmacro bind-balanced-inserter (str key1 &optional keysetter)
@@ -107,6 +110,7 @@ See also: unpop-stack-marker."
 		       (backward-char ,(/ (length str) 2)))))
 
 (bind-balanced-inserter "\"\"" [?\M-\"])
+(bind-balanced-inserter "''" [?\M-\'])
 (bind-balanced-inserter "[]" [?\M-\[])
 (bind-balanced-inserter "{}" [?\M-\{])
 (bind-balanced-inserter "<>" [?\M-\C-<])
@@ -124,8 +128,14 @@ See also: unpop-stack-marker."
 			  (insert "(in-package :)")
 			  (backward-char)))
 
+(defun lcgrep (regexp)
+  "grep launchcode source tree"
+  (interactive "Mregexp: ") 
+  (grep-apply-setting 'grep-command  (format "grep --color -nrH -e %s /home/dm/launch_code/app /home/dm/launch_code/spec" regexp))
+  (call-interactively 'grep))
+
 (global-set-key [?\C-x ?\C-k] 'kill-this-buffer)
-(global-set-key [f8] 'compile)
+(global-set-key [f8] 'lcgrep)
 (global-set-key [f4] 'next-error)
 (global-set-key '[C-f8] 'grep)
 (global-set-key '[C-tab] 'other-window)
@@ -208,7 +218,7 @@ See also: unpop-stack-marker."
  '(show-trailing-whitespace t)
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
  '(tool-bar-mode nil nil (tool-bar))
- '(transient-mark-mode t))
+ '(transient-mark-mode (quote (only . t))))
 ;; bitstream font :face is spelled "bitstream-bitstream vera sans mono"
 ;; it works with font height 122
 ;; also "b&h-lucidatypewriter" at 136
@@ -217,7 +227,7 @@ See also: unpop-stack-marker."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:stipple nil :background "#d5dadf" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 160 :width normal :family "adobe-courier"))))
+ '(default ((t (:inherit nil :stipple nil :background "#d5dadf" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 128 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
  '(font-lock-builtin-face ((((class color) (background light)) (:foreground "Gray30"))))
  '(font-lock-function-name-face ((((class color) (background light)) (:foreground "Blue" :weight bold))))
  '(trailing-whitespace ((t nil))))
@@ -311,8 +321,8 @@ See also: unpop-stack-marker."
 (when window-system
   (global-set-key (kbd "C-x C-c") 'ask-before-closing))
 
-(global-set-key (kbd "s-r") 'point-to-register)
-(global-set-key (kbd "s-j") 'jump-to-register)
+;;(global-set-key (kbd "s-r") 'point-to-register)
+;;(global-set-key (kbd "s-j") 'jump-to-register)
 
 (put 'erase-buffer 'disabled nil)
 
@@ -352,3 +362,12 @@ See also: unpop-stack-marker."
 (ido-mode 1)
 
 
+
+;; (add-to-list 'default-frame-alist '(font. "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1"))
+;; (set-face-attribute 'default t :font "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1" )
+;; (set-face-attribute 'default nil :font "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1" )
+;; (set-frame-font "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1" nil t)
+
+;; (set-default-font “Terminus-9”)
+(setq js-indent-level 2
+      css-indent-offset 2)
