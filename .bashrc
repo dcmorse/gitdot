@@ -72,6 +72,21 @@ xterm*|rxvt*)
     ;;
 esac
 
+alias gs='git status'
+alias gd='git diff'
+alias gb='git branch'
+alias gl='git log'
+alias gd='git diff'
+alias gp='git push'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gca='git commit -a'
+alias gcam='git commit -am'
+alias gcma='git commit -am'
+
+# not proud.
+alias zues='zeus'
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -152,3 +167,6 @@ loc ()
 }
 
 . $HOME/.supersecret.sh
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

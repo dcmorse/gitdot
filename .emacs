@@ -99,7 +99,8 @@ See also: unpop-stack-marker."
 ;; super left-hand
 (global-set-key [?\s-d] 'bury-buffer)
 (global-set-key [?\s-f] 'unbury-buffer)
-;;(global-set-key [?\s-d] 'lisp-buffer-switcharoo)
+(global-set-key [s-tab] 'indent-code-rigidly)
+
 
 
 (defmacro bind-balanced-inserter (str key1 &optional keysetter)
@@ -128,14 +129,21 @@ See also: unpop-stack-marker."
 			  (insert "(in-package :)")
 			  (backward-char)))
 
-(defun lcgrep (regexp)
+(defun launchcode-grep (regexp)
   "grep launchcode source tree"
   (interactive "Mregexp: ") 
-  (grep-apply-setting 'grep-command  (format "grep --color -nrH -e %s /home/dm/launch_code/app /home/dm/launch_code/spec" regexp))
+  (grep-apply-setting 'grep-command  (format "grep --color -nirH -e %s /home/dm/launch_code/app /home/dm/launch_code/spec" regexp))
+  (call-interactively 'grep))
+
+(defun contra-grep (regexp)
+  "grep launchcode source tree"
+  (interactive "Mregexp: ") 
+  (grep-apply-setting 'grep-command  (format "grep --color -nirH -e %s /home/dm/contra/app /home/dm/contra/spec" regexp))
   (call-interactively 'grep))
 
 (global-set-key [?\C-x ?\C-k] 'kill-this-buffer)
-(global-set-key [f8] 'lcgrep)
+(global-set-key [f8] 'launchcode-grep)
+(global-set-key [f7] 'contra-grep)
 (global-set-key [f4] 'next-error)
 (global-set-key '[C-f8] 'grep)
 (global-set-key '[C-tab] 'other-window)
@@ -216,6 +224,7 @@ See also: unpop-stack-marker."
  '(mouse-yank-at-point t)
  '(show-paren-mode t nil (paren))
  '(show-trailing-whitespace t)
+ '(tab-width 2)
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
  '(tool-bar-mode nil nil (tool-bar))
  '(transient-mark-mode (quote (only . t))))
@@ -347,7 +356,7 @@ See also: unpop-stack-marker."
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)                    ; M-x package-list-packages, M-x package-install
-(require 'evil)
+; (require 'evil)
 ; (require 'coffee-mode)
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
@@ -371,3 +380,35 @@ See also: unpop-stack-marker."
 ;; (set-default-font “Terminus-9”)
 (setq js-indent-level 2
       css-indent-offset 2)
+
+(defun insert-dash () (interactive) (insert "-"))
+(defun insert-underscore () (interactive) (insert "_"))
+(defun swap-dash-with-underscore ()
+  (interactive)
+  (local-set-key [?_] (if (eql 'self-insert-command (key-binding [?_])) 'insert-dash       'self-insert-command))
+  (local-set-key [?-] (if (eql 'self-insert-command (key-binding [?-])) 'insert-underscore 'self-insert-command)))
+(defun restore-dash-underscore ()
+  (interactive)
+  (local-set-key [?_] 'self-insert-command)
+  (local-set-key [?-] 'self-insert-command))
+
+(add-hook 'enh-ruby-mode-hook 'swap-dash-with-underscore)
+(add-hook 'ruby-mode-hook 'swap-dash-with-underscore)
+
+
+(defun toggle-camelcase-underscores ()
+  "Toggle between camelcase and underscore notation for the symbol at point."
+  (interactive)
+  (save-excursion
+    (let* ((bounds (bounds-of-thing-at-point 'symbol))
+           (start (car bounds))
+           (end (cdr bounds))
+           (currently-using-underscores-p (progn (goto-char start)
+                                                 (re-search-forward "_" end t))))
+      (if currently-using-underscores-p
+          (progn
+            (upcase-initials-region start end)
+            (replace-string "_" "" nil start end)
+            (downcase-region start (1+ start)))
+        (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
+        (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
