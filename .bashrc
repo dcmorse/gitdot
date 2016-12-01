@@ -131,10 +131,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-. ~/.rvm/scripts/rvm #questionably source this rvm installer.
-# It used to just export PATH="$PATH:$HOME/.rvm/bin", but that didn't
-# do the trick
-
 export EDITOR=emacsclient
 
 # Launchcode
@@ -166,7 +162,20 @@ loc ()
     find . -iname "*$1*" -print
 }
 
+
 . $HOME/.supersecret.sh
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+if [ -d $HOME/.rbenv/bin ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+  export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+fi
+
+if [ -f ~/.rvm/scripts/rvm ]; then
+  . ~/.rvm/scripts/rvm
+fi
+
+if [ -d /usr/local/heroku/bin ]; then
+  export PATH="/usr/local/heroku/bin:$PATH"
+fi
+
