@@ -100,6 +100,7 @@ See also: unpop-stack-marker."
 (global-set-key [?\s-d] 'bury-buffer)
 (global-set-key [?\s-f] 'unbury-buffer)
 (global-set-key [s-tab] 'indent-code-rigidly)
+(global-set-key [?\M-\C-%] 'query-replace-regexp)
 
 
 
@@ -330,8 +331,10 @@ See also: unpop-stack-marker."
 (when window-system
   (global-set-key (kbd "C-x C-c") 'ask-before-closing))
 
-;;(global-set-key (kbd "s-r") 'point-to-register)
-;;(global-set-key (kbd "s-j") 'jump-to-register)
+(global-set-key (kbd "s-r") 'point-to-register)
+(global-set-key (kbd "s-R") 'jump-to-register)
+(global-set-key (kbd "s-c") 'copy-to-register)
+(global-set-key (kbd "s-v") 'insert-register)
 
 (put 'erase-buffer 'disabled nil)
 
@@ -392,8 +395,8 @@ See also: unpop-stack-marker."
   (local-set-key [?_] 'self-insert-command)
   (local-set-key [?-] 'self-insert-command))
 
-(add-hook 'enh-ruby-mode-hook 'swap-dash-with-underscore)
-(add-hook 'ruby-mode-hook 'swap-dash-with-underscore)
+;; (add-hook 'enh-ruby-mode-hook 'swap-dash-with-underscore)
+;; (add-hook 'ruby-mode-hook 'swap-dash-with-underscore)
 
 
 (defun toggle-camelcase-underscores ()
@@ -412,3 +415,5 @@ See also: unpop-stack-marker."
             (downcase-region start (1+ start)))
         (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
         (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
+
+(setq js-indent-level 2)
