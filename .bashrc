@@ -179,3 +179,14 @@ if [ -d /usr/local/heroku/bin ]; then
   export PATH="/usr/local/heroku/bin:$PATH"
 fi
 
+# fuzzy find
+ff ()
+{
+  acc='*'
+  while (( "$#" )); do
+    acc="$acc$1*"
+    shift
+  done
+  # echo find . -iname "$acc"
+  find . -iname "$acc"
+}
