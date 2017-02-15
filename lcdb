@@ -1,0 +1,12 @@
+#!/bin/bash
+
+case "$1" in
+  'get' | 'g' | '-g' )
+    ruby /home/dm/gitdot/lcdb-get.rb;;
+  'install' | 'i' | '-i' )
+    cd ~/launch_code
+    bundle exec rake db:drop db:create && mysql -u root -pMyNewPass launchcode_dev < `ls ~/launchcode_backup_*.sql | tail -n 1`
+    echo success ;;
+  * )
+    echo "usage: ${0} get | install"
+esac
