@@ -99,7 +99,10 @@ See also: unpop-stack-marker."
 ;; super left-hand
 (global-set-key [?\s-d] 'bury-buffer)
 (global-set-key [?\s-f] 'unbury-buffer)
+(global-set-key [?\s-q] 'ido-switch-buffer)
 (global-set-key [s-tab] 'indent-code-rigidly)
+
+
 (global-set-key [?\M-\C-%] 'query-replace-regexp)
 
 
@@ -133,13 +136,13 @@ See also: unpop-stack-marker."
 (defun launchcode-grep (regexp)
   "grep launchcode source tree"
   (interactive "Mregexp: ") 
-  (grep-apply-setting 'grep-command  (format "grep --color -nirH -e %s /home/dm/launch_code/app /home/dm/launch_code/spec" regexp))
+  (grep-apply-setting 'grep-command  (format "grep --color -nirH -e %s /home/dm/launch_code/app /home/dm/launch_code/lib /home/dm/launch_code/spec" regexp))
   (call-interactively 'grep))
 
 (defun contra-grep (regexp)
   "grep launchcode source tree"
   (interactive "Mregexp: ") 
-  (grep-apply-setting 'grep-command  (format "grep --color -nirH -e %s /home/dm/contra/app /home/dm/contra/spec" regexp))
+  (grep-apply-setting 'grep-command  (format "grep --color -nirH -e %s /home/dm/contra/app /home/dm/contra/lib /home/dm/contra/spec" regexp))
   (call-interactively 'grep))
 
 (global-set-key [?\C-x ?\C-k] 'kill-this-buffer)
@@ -197,7 +200,7 @@ See also: unpop-stack-marker."
  '(blink-cursor-mode nil)
  '(case-fold-search t)
  '(compilation-scroll-output t)
- '(compilation-window-height 10)
+ '(compilation-window-height 15)
  '(confirm-kill-emacs nil)
  '(current-language-environment "ASCII")
  '(default-frame-alist
@@ -220,6 +223,9 @@ See also: unpop-stack-marker."
  '(initial-scratch-message "
 ")
  '(ispell-extra-args (quote ("-W" "2")))
+ '(js2-basic-offset 2)
+ '(js2-mode-indent-ignore-first-tab t)
+ '(js2-strict-missing-semi-warning t)
  '(mouse-wheel-follow-mouse t)
  '(mouse-wheel-mode t nil (mwheel))
  '(mouse-yank-at-point t)
@@ -239,7 +245,11 @@ See also: unpop-stack-marker."
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#d5dadf" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 128 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
  '(font-lock-builtin-face ((((class color) (background light)) (:foreground "Gray30"))))
+ '(font-lock-comment-face ((t (:foreground "saddle brown"))))
  '(font-lock-function-name-face ((((class color) (background light)) (:foreground "Blue" :weight bold))))
+ '(font-lock-type-face ((t (:foreground "royal blue"))))
+ '(js2-external-variable ((t (:foreground "orange red"))))
+ '(js2-warning ((t (:underline (:color "red" :style wave)))))
  '(trailing-whitespace ((t nil))))
 
 
@@ -441,3 +451,9 @@ See also: unpop-stack-marker."
 (setq-default sh-indentation 2)
 
 
+(global-linum-mode t)
+
+
+(global-set-key (kbd "C-;") 'iedit-mode)
+
+;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))

@@ -56,10 +56,14 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+git-branch-for-prompt() {
+  git symbolic-ref --short HEAD 2> /dev/null
+}
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] $(git-branch-for-prompt) \[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h $(git-branch-for-prompt) \w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -83,6 +87,7 @@ alias gcm='git commit -m'
 alias gca='git commit -a'
 alias gcam='git commit -am'
 alias gcma='git commit -am'
+alias gap='git add -p'
 
 # not proud.
 alias zues='zeus'
@@ -190,3 +195,6 @@ ff ()
   # echo find . -iname "$acc"
   find . -iname "$acc"
 }
+
+# added by Miniconda3 4.3.11 installer
+export PATH="/home/dm/miniconda3/bin:$PATH"
