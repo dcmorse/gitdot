@@ -60,8 +60,14 @@ git-branch-for-prompt() {
   git symbolic-ref --short HEAD 2> /dev/null
 }
 
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+RESET="$(tput sgr0)"
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] $(git-branch-for-prompt) \[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] ${YELLOW}$(git-branch-for-prompt)${RESET} \[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h $(git-branch-for-prompt) \w\$ '
 fi
@@ -88,6 +94,9 @@ alias gca='git commit -a'
 alias gcam='git commit -am'
 alias gcma='git commit -am'
 alias gap='git add -p'
+alias zr='zeus rspec'
+alias be='bundle exec'
+alias lcsql='mysql -u root -pMyNewPass launchcode_dev'
 
 # not proud.
 alias zues='zeus'
@@ -145,6 +154,7 @@ export MYSQL_USERNAME=root
 
 alias fds='cd /home/dm/launch_code'
 alias rew='cd /home/dm/contra'
+alias lcca='cd /home/dm/launchcode_company_admin'
 
 
 # em: open an existing emacs on the files given
@@ -198,3 +208,9 @@ ff ()
 
 # added by Miniconda3 4.3.11 installer
 export PATH="/home/dm/miniconda3/bin:$PATH"
+
+alias contradb='ssh rails@45.55.252.228'
+
+stty -ixon # disable control-s shenanigans via Sarah magic
+alias diff=colordiff
+alias ag='\ag --pager="less -XFR"'

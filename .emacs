@@ -97,6 +97,7 @@ See also: unpop-stack-marker."
 (global-set-key [?\s-y] 'unpop-stack-marker)
 
 ;; super left-hand
+(global-set-key [?\s-a] 'projectile-find-file)
 (global-set-key [?\s-d] 'bury-buffer)
 (global-set-key [?\s-f] 'unbury-buffer)
 (global-set-key [?\s-q] 'ido-switch-buffer)
@@ -244,12 +245,13 @@ See also: unpop-stack-marker."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#d5dadf" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 128 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
+ '(flymake-warnline ((t (:underline (:color "dark red" :style wave)))))
  '(font-lock-builtin-face ((((class color) (background light)) (:foreground "Gray30"))))
  '(font-lock-comment-face ((t (:foreground "saddle brown"))))
  '(font-lock-function-name-face ((((class color) (background light)) (:foreground "Blue" :weight bold))))
  '(font-lock-type-face ((t (:foreground "royal blue"))))
  '(js2-external-variable ((t (:foreground "orange red"))))
- '(js2-warning ((t (:underline (:color "red" :style wave)))))
+ '(js2-warning ((t (:underline "firebrick4"))))
  '(trailing-whitespace ((t nil))))
 
 
@@ -456,4 +458,7 @@ See also: unpop-stack-marker."
 
 (global-set-key (kbd "C-;") 'iedit-mode)
 
-;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+(require 'ag)
+(require 'elm-mode)
