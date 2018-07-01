@@ -224,6 +224,7 @@ export PATH="/home/dm/miniconda3/bin:$PATH"
 
 alias contradb='ssh rails@45.55.252.228'
 export CONTRADB='rails@45.55.252.228'
+export CONTRADB_IP='45.55.252.228'
 
 # also user root is an option
 alias hot-job-bot='ssh hot-job-bot@165.227.4.101'
@@ -232,3 +233,12 @@ export HOT_JOB_BOT_IP='165.227.4.101'
 stty -ixon # disable control-s shenanigans via Sarah magic
 alias diff=colordiff
 alias ag='\ag --pager="less -XFR"'
+
+contradb_backup_file="$HOME/priv/contradb/contradb-$(date -u +%Y-%m-%d).sql"
+case "$-" in
+*i*)	if ! [[ -r "$contradb_backup_file" && -s "$contradb_backup_file" ]]
+then
+  echo "time to run contradb-backup"
+fi
+;;
+esac
