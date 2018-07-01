@@ -12,6 +12,7 @@
 (defun eemacs () (interactive) (find-file "~/gitdot/.emacs"))
 (defun ebash  () (interactive) (find-file "~/.bashrc"))
 (defun ehelp  () (interactive) (find-file "~/help.txt"))
+(defun echars  () (interactive) (find-file "~/chars.txt"))
 
 (load "~/.emacs-mail-aliases.el" t)
 
@@ -90,11 +91,14 @@ See also: unpop-stack-marker."
 
 ;; super upper-row
 ;; super-p is masked by gnome for horrible reasons, easier to pick a new key for these
-;; (global-set-key [?\s-o] 'bury-buffer)        ; replace with modeline voodoo
-;; (global-set-key [?\s-p] 'dave-unbury-buffer) ; replace with modeline voodoo
-(global-set-key [?\s-i] 'push-stack-marker)
-(global-set-key [?\s-u] 'pop-stack-marker)
-(global-set-key [?\s-y] 'unpop-stack-marker)
+;; (global-set-key [?\s-p] 'push-stack-marker)
+;; (global-set-key [?\s-o] 'pop-stack-marker)
+;; (global-set-key [?\s-i] 'unpop-stack-marker)
+(global-set-key [?\s-u] 'backward-kill-line)
+(defun backward-kill-line (arg)
+  "Kill ARG lines backward."
+  (interactive "p")
+  (kill-line (- 1 arg)))
 
 ;; super left-hand
 (global-set-key [?\s-a] 'projectile-find-file)
@@ -103,17 +107,19 @@ See also: unpop-stack-marker."
 (global-set-key [?\s-q] 'ido-switch-buffer)
 (global-set-key [s-tab] 'indent-code-rigidly)
 
-
 (global-set-key [?\M-\C-%] 'query-replace-regexp)
 
+(global-set-key [f2] 'rspec-verify-single)
+(global-set-key [f3] 'rspec-rerun)
+(global-set-key [f6] 'rspec-yank-last-command)
 
 
 (defmacro bind-balanced-inserter (str key1 &optional keysetter)
   (if (not keysetter)
       (setq keysetter 'global-set-key))
   `(,keysetter ,key1 (lambda () (interactive)
-		       (insert ,str)
-		       (backward-char ,(/ (length str) 2)))))
+                       (insert ,str)
+                       (backward-char ,(/ (length str) 2)))))
 
 (bind-balanced-inserter "\"\"" [?\M-\"])
 (bind-balanced-inserter "''" [?\M-\'])
@@ -128,11 +134,6 @@ See also: unpop-stack-marker."
 (global-set-key [?\M-\C-^] (lambda () 
 			     (interactive) (forward-line)
 			     (delete-indentation)))
-
-(global-set-key [?\M-+] (lambda ()
-			  (interactive)
-			  (insert "(in-package :)")
-			  (backward-char)))
 
 (defun launchcode-grep (regexp)
   "grep launchcode source tree"
@@ -201,7 +202,7 @@ See also: unpop-stack-marker."
  '(blink-cursor-mode nil)
  '(case-fold-search t)
  '(compilation-scroll-output t)
- '(compilation-window-height 15)
+ '(compilation-window-height 17)
  '(confirm-kill-emacs nil)
  '(current-language-environment "ASCII")
  '(default-frame-alist
@@ -235,7 +236,8 @@ See also: unpop-stack-marker."
  '(tab-width 2)
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
  '(tool-bar-mode nil nil (tool-bar))
- '(transient-mark-mode (quote (only . t))))
+ '(transient-mark-mode (quote (only . t)))
+ '(whitespace-line-column nil))
 ;; bitstream font :face is spelled "bitstream-bitstream vera sans mono"
 ;; it works with font height 122
 ;; also "b&h-lucidatypewriter" at 136
@@ -252,7 +254,9 @@ See also: unpop-stack-marker."
  '(font-lock-type-face ((t (:foreground "royal blue"))))
  '(js2-external-variable ((t (:foreground "orange red"))))
  '(js2-warning ((t (:underline "firebrick4"))))
- '(trailing-whitespace ((t nil))))
+ '(trailing-whitespace ((t nil)))
+ '(whitespace-indentation ((t nil)))
+ '(whitespace-space ((t (:foreground "lightgray")))))
 
 
 
@@ -371,8 +375,6 @@ See also: unpop-stack-marker."
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)                    ; M-x package-list-packages, M-x package-install
-; (require 'evil)
-; (require 'coffee-mode)
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 (setq ruby-deep-indent-paren nil)
@@ -384,8 +386,8 @@ See also: unpop-stack-marker."
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode 1)
-
-
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
 ;; (add-to-list 'default-frame-alist '(font. "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1"))
 ;; (set-face-attribute 'default t :font "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1" )
@@ -462,3 +464,14 @@ See also: unpop-stack-marker."
 (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
 (require 'ag)
 (require 'elm-mode)
+
+
+(global-whitespace-mode 1) 
+(setq whitespace-style '(face             ;; enable visualization via faces
+                         trailing         ;; show trailing blanks
+                         tabs             ;; show tabs
+                         empty            ;; empty lines at beginning/end of buffer
+                         ;; indentation      ;; "wrong" indentation according to indent-tabs-mode
+                         ;; space-after-tab  ;; mixing
+                         ;; space-before-tab ;; mixing
+                         ))
