@@ -191,8 +191,6 @@ See also: unpop-stack-marker."
 ;; that take a name as first argument.
 (make-face 'defmumble)
 
-(server-start)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -246,7 +244,7 @@ See also: unpop-stack-marker."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#d5dadf" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight light :height 128 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
+ '(default ((t (:inherit nil :stipple nil :background "#d5dadf" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "PfEd" :family "DejaVu Sans Mono"))))
  '(flymake-warnline ((t (:underline (:color "dark red" :style wave)))))
  '(font-lock-builtin-face ((((class color) (background light)) (:foreground "Gray30"))))
  '(font-lock-comment-face ((t (:foreground "saddle brown"))))
@@ -254,7 +252,8 @@ See also: unpop-stack-marker."
  '(font-lock-type-face ((t (:foreground "royal blue"))))
  '(js2-external-variable ((t (:foreground "orange red"))))
  '(js2-warning ((t (:underline "firebrick4"))))
- '(trailing-whitespace ((t nil)))
+ '(mode-line-inactive ((t (:inherit mode-line :background "SkyBlue3" :foreground "grey20" :box (:line-width -1 :color "SkyBlue1") :weight light))))
+ '(trailing-whitespace ((t (:background "white smoke"))))
  '(whitespace-indentation ((t nil)))
  '(whitespace-space ((t (:foreground "lightgray")))))
 
@@ -465,13 +464,6 @@ See also: unpop-stack-marker."
 (require 'ag)
 (require 'elm-mode)
 
+(global-set-key "\C-c'" 'goto-last-change)
 
-(global-whitespace-mode 1) 
-(setq whitespace-style '(face             ;; enable visualization via faces
-                         trailing         ;; show trailing blanks
-                         tabs             ;; show tabs
-                         empty            ;; empty lines at beginning/end of buffer
-                         ;; indentation      ;; "wrong" indentation according to indent-tabs-mode
-                         ;; space-after-tab  ;; mixing
-                         ;; space-before-tab ;; mixing
-                         ))
+(server-start)                          ;; should always be the last line since it sometimes fails

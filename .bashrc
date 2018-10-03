@@ -155,11 +155,6 @@ export MYSQL_HOST=localhost
 export MYSQL_DATABASE=launchcode_dev
 export MYSQL_USERNAME=root
 
-export HOT_JOB_BOT_USERNAME="info@launchcode.org"
-export HOT_JOB_BOT_PASSWORD="7912launchcode"
-export INDEED_BOT_USERNAME="alec@launchcode.org"
-export INDEED_BOT_PASSWORD="7912launchcode"
-
 
 alias fds='cd /home/dm/launch_code'
 alias rew='cd /home/dm/contra'
@@ -184,12 +179,6 @@ function em ()
   else emacsclient --no-wait "$@";
   fi;
 }
-
-loc () 
-{ 
-    find . -iname "*$1*" -print
-}
-
 
 . $HOME/.supersecret.sh
 
@@ -218,9 +207,6 @@ ff ()
   # echo find . -iname "$acc"
   find . -iname "$acc"
 }
-
-# added by Miniconda3 4.3.11 installer
-export PATH="/home/dm/miniconda3/bin:$PATH"
 
 alias contradb='ssh rails@45.55.252.228'
 export CONTRADB='rails@45.55.252.228'
