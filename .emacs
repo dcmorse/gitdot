@@ -13,6 +13,7 @@
 (defun ebash  () (interactive) (find-file "~/.bashrc"))
 (defun ehelp  () (interactive) (find-file "~/help.txt"))
 (defun echars  () (interactive) (find-file "~/chars.txt"))
+(defun escratch  () (interactive) (switch-to-buffer "*scratch*"))
 
 (load "~/.emacs-mail-aliases.el" t)
 
@@ -252,7 +253,8 @@ See also: unpop-stack-marker."
  '(font-lock-type-face ((t (:foreground "royal blue"))))
  '(js2-external-variable ((t (:foreground "orange red"))))
  '(js2-warning ((t (:underline "firebrick4"))))
- '(mode-line-inactive ((t (:inherit mode-line :background "SkyBlue3" :foreground "grey20" :box (:line-width -1 :color "SkyBlue1") :weight light))))
+ '(mode-line ((t (:inherit mode-line :background "SkyBlue3" :foreground "grey20" :box (:line-width -1 :color "SkyBlue1") :weight light))))
+ '(mode-line-active ((t (:inherit mode-line :background "SkyBlue3" :foreground "grey20" :box (:line-width -1 :color "SkyBlue1") :weight light))))
  '(trailing-whitespace ((t (:background "white smoke"))))
  '(whitespace-indentation ((t nil)))
  '(whitespace-space ((t (:foreground "lightgray")))))
@@ -465,5 +467,8 @@ See also: unpop-stack-marker."
 (require 'elm-mode)
 
 (global-set-key "\C-c'" 'goto-last-change)
+
+;; (require 'flycheck)
+;; (with-eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
 
 (server-start)                          ;; should always be the last line since it sometimes fails

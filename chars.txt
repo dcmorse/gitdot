@@ -1,0 +1,37 @@
+thin space, maybe ' '
+©™®
+≥≤≠
+× °
+✗ ✔
+← → ↑ ↓ ↔ ↕ ↖ ↗ ↘ ↙ ↚ ↛ ↮ ⟵ ⟶ ⟷
+⇦ ⇨ ⇧ ⇩ ⬄ ⇳ ⬀ ⬁ ⬂ ⬃
+⬅ ⮕ ➡ ⬆ ⬇ ⬈ ⬉ ⬊ ⬋ ⬌ ⬍
+↢ ↣
+⇽ ⇾ ⇿
+⇜ ⇝
+⬳ ⟿
+↞ ↠ ↟ ↡
+⤡ ⤢ ⤣ ⤤ ⤥ ⤦ ⤪ ⤨ ⤧ ⤩ ⤭ ⤮ ⤯ ⤰ ⤱ ⤲ ⤫ ⤬
+↰ ↱ ↲ ↳ ⬐ ⬎ ⬑ ⬏ ↴ ↵
+⤶ ⤷ ⤴ ⤵
+
+†‡¶⁋⋮
+
+" QUOTATION MARK
+' APOSTROPHE
+` GRAVE ACCENT
+´ ACUTE ACCENT
+‘ LEFT SINGLE QUOTATION MARK
+’ RIGHT SINGLE QUOTATION MARK
+“ LEFT DOUBLE QUOTATION MARK
+” RIGHT DOUBLE QUOTATION MARK
+½
+⅓⅔
+¼½¾
+⅕⅖⅗⅘
+⅙⅓½⅔⅚
+⅐
+⅛¼⅜½⅝¾⅞
+⅑
+⅒
+¹²
