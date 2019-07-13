@@ -219,6 +219,7 @@ See also: unpop-stack-marker."
  '(flx-ido-mode t)
  '(font-lock-maximum-decoration nil)
  '(global-font-lock-mode t nil (font-lock))
+ '(highlight-indentation-current-column-mode t t)
  '(ido-everywhere t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message "
@@ -251,6 +252,7 @@ See also: unpop-stack-marker."
  '(font-lock-comment-face ((t (:foreground "saddle brown"))))
  '(font-lock-function-name-face ((((class color) (background light)) (:foreground "Blue" :weight bold))))
  '(font-lock-type-face ((t (:foreground "royal blue"))))
+ '(highlight-indentation-current-column-face ((t (:background "white smoke"))))
  '(js2-external-variable ((t (:foreground "orange red"))))
  '(js2-warning ((t (:underline "firebrick4"))))
  '(mode-line ((t (:inherit mode-line :background "SkyBlue3" :foreground "grey20" :box (:line-width -1 :color "SkyBlue1") :weight light))))
@@ -259,8 +261,9 @@ See also: unpop-stack-marker."
  '(whitespace-indentation ((t nil)))
  '(whitespace-space ((t (:foreground "lightgray")))))
 
-
-
+(setq whitespace-style '(lines))
+(setq whitespace-line-column 80)
+(global-whitespace-mode 1)
 
 (put 'if 'lisp-indent-function nil)
 (put 'labels 'lisp-indent-function 1)
@@ -390,6 +393,8 @@ See also: unpop-stack-marker."
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
+(require 'highlight-indentation)
+(add-hook 'prog-mode-hook 'highlight-indentation-current-column-mode)
 ;; (add-to-list 'default-frame-alist '(font. "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1"))
 ;; (set-face-attribute 'default t :font "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1" )
 ;; (set-face-attribute 'default nil :font "-PfEd-DejaVu Sans-normal-normal-normal-*-25-*-*-*-*-0-iso10646-1" )
@@ -472,3 +477,5 @@ See also: unpop-stack-marker."
 ;; (with-eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
 
 (server-start)                          ;; should always be the last line since it sometimes fails
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
