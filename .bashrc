@@ -85,6 +85,7 @@ xterm*|rxvt*)
 esac
 
 alias gs='git status -s'
+alias gst='git status -s'
 alias gss='git status'
 alias gd='git diff'
 alias gb='git branch'
@@ -93,9 +94,6 @@ alias gd='git diff'
 alias gp='git push'
 alias gc='git commit'
 alias gcm='git commit -m'
-alias gca='git commit -a'
-alias gcam='git commit -am'
-alias gcma='git commit -am'
 alias gap='git add -p'
 alias zr='zeus rspec'
 alias be='bundle exec'

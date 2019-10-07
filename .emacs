@@ -227,10 +227,14 @@ See also: unpop-stack-marker."
  '(ispell-extra-args (quote ("-W" "2")))
  '(js2-basic-offset 2)
  '(js2-mode-indent-ignore-first-tab t)
- '(js2-strict-missing-semi-warning t)
+ '(js2-strict-missing-semi-warning nil)
  '(mouse-wheel-follow-mouse t)
  '(mouse-wheel-mode t nil (mwheel))
  '(mouse-yank-at-point t)
+ '(package-selected-packages
+   (quote
+    (add-node-modules-path prettier-js js2-mode js2-refactor xref-js2 typescript-mode yaml-mode vue-mode rspec-mode rainbow-delimiters projectile-rails paredit-everywhere magit js2-highlight-vars iedit highlight-indentation haml-mode goto-last-change flymd flymake-ruby flycheck-elm flx-ido fiplr elm-mode company cider ag)))
+ '(prettier-js-command "prettier")
  '(show-paren-mode t nil (paren))
  '(show-trailing-whitespace t)
  '(tab-width 2)
@@ -436,8 +440,6 @@ See also: unpop-stack-marker."
         (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
         (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
 
-(setq js-indent-level 2)
-
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (add-hook 'js-mode-hook 'subword-mode)
@@ -468,6 +470,14 @@ See also: unpop-stack-marker."
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+(js2r-add-keybindings-with-prefix "C-c C-r")
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+(add-hook 'js2-mode-hook #'js2-refactor-mode)
+(define-key js-mode-map (kbd "M-.") nil)
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+(add-hook 'js2-mode-hook (lambda ()
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 (require 'ag)
 (require 'elm-mode)
 
@@ -479,3 +489,9 @@ See also: unpop-stack-marker."
 (server-start)                          ;; should always be the last line since it sometimes fails
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(setq-default typescript-indent-level 2)
+(require 'prettier-js)
+(eval-after-load 'js2-mode
+  '(add-hook 'js2-mode-hook #'add-node-modules-path))
+(add-hook 'js2-mode-hook 'prettier-js-mode)
